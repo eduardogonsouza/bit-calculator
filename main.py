@@ -3,34 +3,73 @@ from InquirerPy.base.control import Choice
 
 
 def BitCalculator():
-    initialbit = float(input("Qual o valor de entrada ? "))
     bitType = ""
-    bitAccumulator = initialbit
+    calculationComplete = False
 
-    trasformationByte = inquirer.select(
-        message="Selecione a o tipo de byte inserido acima:",
+    asYes = inquirer.select(
+        message="Deseja calcular toda atividade ?",
         choices=[
-            Choice(value=0, name="Byte"),
-            Choice(value=1, name="KB"),
-            Choice(value=2, name="MB"),
-            Choice(value=3, name="GB"),
+            Choice(value=True, name="Yes"),
+            Choice(value=False, name="No"),
         ],
         default=None,
     ).execute()
 
-    trasformationBit = inquirer.select(
-        message="Selecione o bit para qual deseja transformar:",
-        choices=[
-            Choice(value=0, name="Bit"),
-            Choice(value=1, name="Kb"),
-            Choice(value=2, name="Mb"),
-            Choice(value=3, name="Gb"),
-        ],
-        default=None,
-    ).execute()
+    calculationComplete = asYes
+
+    if calculationComplete == False:
+        initialbit = float(input("(Somente Números) Qual o valor de entrada ? "))
+        trasformationByte = inquirer.select(
+            message="Selecione a o tipo de byte inserido acima:",
+            choices=[
+                Choice(value=0, name="Byte"),
+                Choice(value=1, name="KB"),
+                Choice(value=2, name="MB"),
+                Choice(value=3, name="GB"),
+            ],
+            default=None,
+        ).execute()
+
+        trasformationBit = inquirer.select(
+            message="Selecione o bit para qual deseja transformar:",
+            choices=[
+                Choice(value=0, name="Bit"),
+                Choice(value=1, name="Kb"),
+                Choice(value=2, name="Mb"),
+                Choice(value=3, name="Gb"),
+            ],
+            default=None,
+        ).execute()
+
+    elif calculationComplete:
+        initialbit = float(input("(Somente Números) Qual o valor de entrada ? "))
+        trasformationByte = inquirer.select(
+            message="Selecione a o tipo de byte inserido acima:",
+            choices=[
+                Choice(value=0, name="Byte"),
+                Choice(value=1, name="KB"),
+                Choice(value=2, name="MB"),
+                Choice(value=3, name="GB"),
+            ],
+            default=None,
+        ).execute()
+
+        bitVelocity = float(input("(Somente Números) Qual o valor da 'Velocidade' ?"))
+
+        trasformationBit = inquirer.select(
+            message="Selecione a o tipo de bit inserido acima:",
+            choices=[
+                Choice(value=0, name="Bit"),
+                Choice(value=1, name="Kb"),
+                Choice(value=2, name="Mb"),
+                Choice(value=3, name="Gb"),
+            ],
+            default=None,
+        ).execute()
 
     increaseNumber = trasformationByte
     decreaseNumber = trasformationBit
+    bitAccumulator = initialbit
 
     if trasformationByte == 1:
         bitType = "K"
@@ -47,6 +86,10 @@ def BitCalculator():
 
     print(f"{bitAccumulator} {bitType}B")
     print(f"{bitAccumulator * 8} {bitType}bit/s")
+
+    if calculationComplete:
+        bitComplete = (bitAccumulator * 8) / bitVelocity
+        print(f"{bitComplete} Segundos")
 
 
 BitCalculator()
