@@ -18,7 +18,7 @@ def BitCalculator():
     calculationComplete = asYes
 
     if calculationComplete == False:
-        initialbit = float(input("(Somente Números) Qual o valor de entrada ? "))
+        initialbit = float(input("(Somente Números) Qual o 'Tamanho' do arquivo: "))
         trasformationByte = inquirer.select(
             message="Selecione a o tipo de byte inserido acima:",
             choices=[
@@ -42,7 +42,7 @@ def BitCalculator():
         ).execute()
 
     elif calculationComplete:
-        initialbit = float(input("(Somente Números) Qual o valor de entrada ? "))
+        initialbit = float(input("(Somente Números) Qual o 'Tamanho' do arquivo: "))
         trasformationByte = inquirer.select(
             message="Selecione a o tipo de byte inserido acima:",
             choices=[
@@ -54,7 +54,7 @@ def BitCalculator():
             default=None,
         ).execute()
 
-        bitVelocity = float(input("(Somente Números) Qual o valor da 'Velocidade' ?"))
+        bitVelocity = float(input("(Somente Números) Qual o valor da 'Velocidade': "))
 
         trasformationBit = inquirer.select(
             message="Selecione a o tipo de bit inserido acima:",
@@ -71,11 +71,11 @@ def BitCalculator():
     decreaseNumber = trasformationBit
     bitAccumulator = initialbit
 
-    if trasformationByte == 1:
+    if trasformationBit == 1:
         bitType = "K"
-    elif trasformationByte == 2:
+    elif trasformationBit == 2:
         bitType = "M"
-    elif trasformationByte == 3:
+    elif trasformationBit == 3:
         bitType = "G"
 
     for i in range(1, (increaseNumber - decreaseNumber) + 1):
@@ -89,7 +89,8 @@ def BitCalculator():
 
     if calculationComplete:
         bitComplete = (bitAccumulator * 8) / bitVelocity
-        print(f"{bitComplete} Segundos")
+        print("{:.2f} Segundos".format(bitComplete))
+        print("{:.2f} Minutos".format(bitComplete / 60))
 
 
 BitCalculator()
