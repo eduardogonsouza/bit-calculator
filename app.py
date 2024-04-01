@@ -1,6 +1,8 @@
 from tkinter import *
 import os
 from customtkinter import *
+from Utils.Calculete import *
+import Utils.Variables as vr
 
 basedir = os.path.dirname(__file__)
 
@@ -9,7 +11,7 @@ window = CTk()
 window.geometry("500x550")
 window.title("Bit-Calculator")
 window.resizable(False, False)
-window.iconbitmap(os.path.join(basedir, "./Assets/icon.ico"))
+window.iconbitmap(os.path.join(basedir, "Assets/icon.ico"))
 
 initialBitType = IntVar(value=0)
 initialBitValue = StringVar()
@@ -17,67 +19,38 @@ initialVelocityType = IntVar(value=0)
 initialVelocityValue = StringVar()
 
 
-resultByte = DoubleVar()
-resultBit = DoubleVar()
-resultSegunds = DoubleVar()
-resultMinutes = DoubleVar()
-errorResult = StringVar()
-isErro = BooleanVar()
+def passData():
+    BitCalculator(
+        initialBitType.get(),
+        initialBitValue.get(),
+        initialVelocityType.get(),
+        initialVelocityValue.get(),
+    )
 
-
-def BitCalculator():
-    if initialBitValue.get() == "":
-        errorResult.set("Preencha as Informações Corretante!")
-        isErro.set(True)
-        resultFrame()
+    if vr.isErro != False:
+        bitText.set(vr.resultBit)
+        byteText.set(vr.resultByte)
+        secondsText.set(vr.resultSegunds)
+        minutesText.set(vr.resultMinutes)
+        errorText.set(vr.errorResult)
         ErrorFrame()
+        resultFrame()
 
     else:
-
-        isErro.set(False)
-        errorResult.set("")
-        ErrorFrame()
-        bitType = ""
-
-        VelocityTypeGet = initialVelocityType.get()
-        VelocityValueGet = float(initialVelocityValue.get())
-
-        resultSegunds.set(0)
-        resultMinutes.set(0)
-
+        bitText.set(vr.resultBit)
+        byteText.set(vr.resultByte)
+        secondsText.set(vr.resultSegunds)
+        minutesText.set(vr.resultMinutes)
+        errorText.set(vr.errorResult)
         resultFrame()
+        ErrorFrame()
 
-        increaseNumber = initialBitType.get()
-        decreaseNumber = VelocityTypeGet
 
-        bitAccumulator = float(initialBitValue.get())
-
-        if VelocityTypeGet == 1:
-            bitType = "K"
-        elif VelocityTypeGet == 2:
-            bitType = "M"
-        elif VelocityTypeGet == 3:
-            bitType = "G"
-
-        if decreaseNumber <= increaseNumber:
-            for i in range(1, (increaseNumber - decreaseNumber) + 1):
-                bitAccumulator = bitAccumulator * 1024
-        else:
-            for i in range(1, (increaseNumber - decreaseNumber) + 1):
-                bitAccumulator = bitAccumulator / 1024
-
-        resultByte.set(f"S = {bitAccumulator} {bitType}B")
-
-        if initialBitValue.get() == 0:
-            return resultBit.set(f"S = {bitAccumulator * 8} bit")
-        else:
-            resultBit.set(f"{bitAccumulator * 8} {bitType}bit")
-
-        bitComplete = (bitAccumulator * 8) / VelocityValueGet
-
-        resultSegunds.set(("{:.2f} Segundos".format(bitComplete)))
-        resultMinutes.set("{:.2f} Minutos".format(bitComplete / 60))
-
+errorText = StringVar()
+bitText = IntVar()
+byteText = IntVar()
+secondsText = DoubleVar()
+minutesText = DoubleVar()
 
 frameWeight = CTkFrame(
     window,
@@ -119,7 +92,7 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=75, y=125)
+).place(x=50, y=125)
 
 Radiobutton(
     frameWeight,
@@ -132,7 +105,7 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=175, y=125)
+).place(x=140, y=125)
 
 Radiobutton(
     frameWeight,
@@ -145,7 +118,7 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=275, y=125)
+).place(x=230, y=125)
 
 Radiobutton(
     frameWeight,
@@ -158,7 +131,21 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=375, y=125)
+).place(x=320, y=125)
+
+
+Radiobutton(
+    frameWeight,
+    text="TB",
+    value=4,
+    width=5,
+    variable=initialBitType,
+    background="#9CA69B",
+    highlightbackground="#9CA69B",
+    highlightcolor="#9CA69B",
+    borderwidth=3,
+    indicatoron=0,
+).place(x=410, y=125)
 
 
 # ----------------------------------------------------------------------------------------------------------------------------------------
@@ -205,7 +192,7 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=75, y=295)
+).place(x=50, y=295)
 
 Radiobutton(
     frameVelocity,
@@ -218,7 +205,7 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=175, y=295)
+).place(x=140, y=295)
 
 Radiobutton(
     frameVelocity,
@@ -231,7 +218,7 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=275, y=295)
+).place(x=230, y=295)
 
 Radiobutton(
     frameVelocity,
@@ -244,7 +231,21 @@ Radiobutton(
     highlightcolor="#9CA69B",
     borderwidth=3,
     indicatoron=0,
-).place(x=375, y=295)
+).place(x=320, y=295)
+
+
+Radiobutton(
+    frameVelocity,
+    text="Tb",
+    value=4,
+    width=5,
+    variable=initialVelocityType,
+    background="#9CA69B",
+    highlightbackground="#9CA69B",
+    highlightcolor="#9CA69B",
+    borderwidth=3,
+    indicatoron=0,
+).place(x=405, y=295)
 
 
 # --------------------------------------------------------------------------------------------------
@@ -263,36 +264,35 @@ CTkLabel(
 
 
 def resultFrame():
-    if isErro.get():
-        resultBit.set("")
-        resultByte.set("")
-        resultMinutes.set("")
-        resultSegunds.set("")
-    else:
+    if vr.isErro == False:
+        # bitText.set("")
+        # byteText.set("")
+        # secondsText.set("")
+        # minutesText.set("")
         CTkLabel(
             frameResult,
-            textvariable=resultBit,
+            textvariable=bitText,
             fg_color="#1c1c1c",
             bg_color="#1c1c1c",
             font=("Roboto", 25),
         ).place(x=55, y=440)
         CTkLabel(
             frameResult,
-            textvariable=resultByte,
+            textvariable=byteText,
             fg_color="#1c1c1c",
             bg_color="#1c1c1c",
             font=("Roboto", 25),
         ).place(x=305, y=440)
         CTkLabel(
             frameResult,
-            textvariable=resultSegunds,
+            textvariable=secondsText,
             fg_color="#1c1c1c",
             bg_color="#1c1c1c",
             font=("Roboto", 25),
         ).place(x=55, y=480)
         CTkLabel(
             frameResult,
-            textvariable=resultMinutes,
+            textvariable=minutesText,
             fg_color="#1c1c1c",
             bg_color="#1c1c1c",
             font=("Roboto", 25),
@@ -300,10 +300,10 @@ def resultFrame():
 
 
 def ErrorFrame():
-    if isErro.get():
+    if vr.isErro:
         CTkLabel(
             frameResult,
-            textvariable=errorResult,
+            textvariable=errorText,
             text_color="#FF0000",
             bg_color="#1c1c1c",
             font=("Roboto", 27, "bold"),
@@ -312,7 +312,7 @@ def ErrorFrame():
 
 CTkButton(
     window,
-    command=BitCalculator,
+    command=passData,
     text="Calcular",
     width=500,
     height=50,
